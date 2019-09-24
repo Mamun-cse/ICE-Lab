@@ -1,4 +1,6 @@
+clc;
 clear;
+close all;
 
 bits = [1,0,0,0,0,0,0,0,0,1,0,1,0];
 
@@ -22,10 +24,10 @@ for i=1:length(bits);
     cont=0;
   
   elseif (bits(i)==0)
-    amplitude(i)=0;
+    amplitude(i)=0
   else
     amplitude(i)=-amp;
-    amp=amplitude(i);
+    amp=amplitude(i)
   endif
   
   
@@ -44,3 +46,25 @@ endfor
 
 plot(time,y_valu);
 axis([0 Time -4 4]);
+
+counter = 0;
+lastbit = 1;
+for i = 1:length(time)
+  if time(i)*bit_rate>counter
+    counter = counter + 1;
+    if y_valu(i)==lastbit
+      result(counter:counter+4) = 0;
+      counter = counter + 4;
+    else
+      if(y_valu(i)==0)
+        result(counter) = 0;
+      else
+        result(counter) = 1;
+        lastbit = -lastbit;
+      end
+    end
+  end
+end
+disp('B8ZS Decoding:');
+disp(result);
+
